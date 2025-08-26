@@ -17,74 +17,96 @@ html, body {
   background: var(--bg);
   color: #ffffff;
   min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 * { border-color: var(--border); }
 
 /* ---------- Layout helpers ---------- */
-.container-safe { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+.container-safe {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80rem; /* ~1280px */
+  padding-left: 1rem;   /* sm:px-6 / lg:px-8 rough equivalent */
+  padding-right: 1rem;
+}
+@media (min-width: 640px) {
+  .container-safe { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+@media (min-width: 1024px) {
+  .container-safe { padding-left: 2rem; padding-right: 2rem; }
+}
 
-/* ---------- Components (safe to @apply here) ---------- */
-@layer components {
-  .btn {
-    /* NOTE: Replaced 'shadow-soft' in @apply with shadow-lg to avoid Tailwind error */
-    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 font-medium transition shadow-lg;
-    background: var(--brand);
-    color: var(--brand-contrast);
-    box-shadow: 0 6px 20px rgba(247, 215, 116, 0.25);
-  }
-  .btn:hover { transform: translateY(-1px); filter: brightness(0.98); }
-  .btn:active { transform: translateY(0); }
+/* ---------- Components (plain CSS; no @apply) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  transition: transform .15s ease, filter .15s ease, box-shadow .2s ease;
+  background: var(--brand);
+  color: var(--brand-contrast);
+  box-shadow: 0 6px 20px rgba(247, 215, 116, 0.25);
+}
+.btn:hover { transform: translateY(-1px); filter: brightness(0.98); }
+.btn:active { transform: translateY(0); }
 
-  .btn-outline {
-    @apply inline-flex items-center justify-center rounded-lg px-5 py-3 font-medium transition border;
-    border-color: var(--brand);
-    color: var(--brand);
-    background: transparent;
-  }
-  .btn-outline:hover {
-    background: rgba(247, 215, 116, 0.12);
-    color: #111111;
-  }
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  transition: background .15s ease, color .15s ease, transform .15s ease;
+  border: 1px solid var(--brand);
+  color: var(--brand);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: rgba(247, 215, 116, 0.12);
+  color: #111111;
 }
 
 /* ---------- Utilities & effects ---------- */
-@layer utilities {
-  /* Custom utility so 'shadow-soft' is valid in markup */
-  .shadow-soft { @apply shadow-lg; }
-
-  /* Card hover motion */
-  .hover-card {
-    @apply transition;
-    transform: translateY(0) scale(1);
-  }
-  .hover-card:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow:
-      0 10px 30px rgba(0,0,0,0.35),
-      0 0 0 1px rgba(255,255,255,0.04) inset;
-  }
-
-  /* Subtle gold gradient border */
-  .grad-border {
-    position: relative;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)) padding-box,
-      linear-gradient(90deg, rgba(255,215,0,0.6), rgba(255,255,255,0.2), rgba(255,215,0,0.6)) border-box;
-    border: 1px solid transparent;
-    border-radius: 1rem;
-  }
-
-  /* Soft gold blobs (decor) — size is set via w-*/h-* utilities in markup */
-  .blob {
-    @apply absolute rounded-full blur-3xl;
-    background: radial-gradient(closest-side, rgba(247,215,116,0.45), rgba(247,215,116,0.08) 60%, transparent);
-    opacity: 0.35;
-    pointer-events: none;
-  }
-
-  .text-gold { color: var(--brand); }
-  .bg-surface { background: var(--surface); }
+.shadow-soft { /* custom utility equivalent to a soft shadow */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.02) inset;
 }
+
+.hover-card {
+  transition: transform .2s ease, box-shadow .25s ease, background .2s ease, border-color .2s ease;
+  transform: translateY(0) scale(1);
+  will-change: transform, box-shadow;
+}
+.hover-card:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(255,255,255,0.04) inset;
+}
+
+.grad-border {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)) padding-box,
+    linear-gradient(90deg, rgba(255,215,0,0.6), rgba(255,255,255,0.2), rgba(255,215,0,0.6)) border-box;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  background: radial-gradient(closest-side, rgba(247,215,116,0.45), rgba(247,215,116,0.08) 60%, transparent);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.text-gold { color: var(--brand); }
+.bg-surface { background: var(--surface); }
 
 /* ---------- Typography tweaks ---------- */
 h1, h2, h3 { letter-spacing: -0.02em; }
@@ -97,7 +119,7 @@ input[type="number"],
 input[type="text"],
 input[type="email"],
 input[type="range"] {
-  @apply outline-none;
+  outline: none;
 }
 
 /* ---------- Selection ---------- */
