@@ -1,20 +1,20 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import Features from "@/components/Features";
-import StatsTiles from "@/components/StatsTiles";
-import EVEstimator from "@/components/EVEstimator";
-import Pricing from "@/components/Pricing";
-import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
-import Footer from "@/components/Footer";
+import Header from "../components/Header";
+import Hero from "../components/Hero";
+import Testimonials from "../components/Testimonials"; // directly under Hero
+import StatsTiles from "../components/StatsTiles";
+import Features from "../components/Features";
+import EVEstimator from "../components/EVEstimator";
+import Pricing from "../components/Pricing";
+import Contact from "../components/Contact";
+import Footer from "../components/Footer";
 
-export default function Page(){
+export default function Home() {
   return (
     <>
       <Header />
       <main>
         <Hero />
-        <Testimonials />
+        <Testimonials />   {/* moved here */}
         <StatsTiles />
         <Features />
         <EVEstimator />
@@ -23,5 +23,5 @@ export default function Page(){
       </main>
       <Footer />
     </>
-  )
+  );
 }
