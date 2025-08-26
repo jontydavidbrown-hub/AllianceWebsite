@@ -45,15 +45,9 @@ export default function StatsTiles() {
             className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6"
           >
             {STATS.map((s) => (
-              <article
-                key={s.label}
-                className="tile-card hover-card ring-1"
-                style={{ borderColor: "var(--border)" }}
-              >
+              <article key={s.label} className="stat-tile hover-card">
                 <div className="tile-inner">
-                  <div className="icon-badge">
-                    {s.icon}
-                  </div>
+                  <div className="icon-badge">{s.icon}</div>
                   <div className="mt-4">
                     <div className="text-2xl font-extrabold leading-none">{s.value}</div>
                     <div className="mt-2 text-sm text-[color:var(--muted)]">{s.label}</div>
