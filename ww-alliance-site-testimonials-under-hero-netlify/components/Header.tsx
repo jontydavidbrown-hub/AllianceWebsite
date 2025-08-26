@@ -1,9 +1,7 @@
-'use client';
+"use client";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { fade } from "./anim";
 
 const nav = [
   { href: "#pricing", label: "Pricing" },
@@ -15,39 +13,66 @@ const nav = [
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  useEffect(()=>{
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll(); window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   return (
-    <header className={`sticky top-0 z-50 border-b border-[var(--border)] transition-all ${scrolled ? "bg-[color:var(--bg)]/90 backdrop-blur shadow-soft" : "bg-[color:var(--bg)]/70 backdrop-blur-sm"}`}>
+    <header
+      className={`sticky top-0 z-50 border-b border-[var(--border)] transition-all ${
+        scrolled
+          ? "bg-[color:var(--bg)]/90 backdrop-blur shadow-soft"
+          : "bg-[color:var(--bg)]/70 backdrop-blur-sm"
+      }`}
+    >
       <div className="container-safe flex h-16 items-center justify-between">
-        <a href="/" className="flex items-center gap-2" aria-label="Home"><img src="/media/crest.png" alt="Global Alliance crest" className="h-10 w-auto" /></a>
+        {/* Crest logo only (no 'W&W Global Alliance' text) */}
+        <a href="/" aria-label="Home" className="flex items-center gap-2">
+          <img
+            src="/media/crest.png"
+            alt="Global Alliance crest"
+            className="h-10 w-auto"
+          />
+        </a>
+
         <nav className="hidden md:flex items-center gap-6">
-          {nav.map(n => (
-            <motion.a
+          {nav.map((n) => (
+            <a
               key={n.href}
               href={n.href}
               className="relative after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:bg-[color:var(--brand)] hover:after:w-full after:transition-all"
-              variants={fade}
-              initial="hidden"
-              animate="show"
             >
               {n.label}
-            </motion.a>
+            </a>
           ))}
-          <Link href="https://whop.com" className="btn-outline">Sign Up</Link>
+          <Link href="https://whop.com" className="btn-outline">
+            Sign Up
+          </Link>
         </nav>
-        <button className="md:hidden" onClick={() => setOpen(v => !v)} aria-label="Toggle menu">
+
+        <button
+          className="md:hidden"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
           <Menu />
         </button>
       </div>
+
       {open && (
         <div className="md:hidden border-t border-[var(--border)]">
           <div className="container-safe py-2 flex flex-col gap-2">
-            {nav.map(n => <a key={n.href} href={n.href} onClick={()=>setOpen(false)}>{n.label}</a>)}
-            <Link href="https://whop.com" className="btn-outline">Sign Up</Link>
+            {nav.map((n) => (
+              <a key={n.href} href={n.href} onClick={() => setOpen(false)}>
+                {n.label}
+              </a>
+            ))}
+            <Link href="https://whop.com" className="btn-outline">
+              Sign Up
+            </Link>
           </div>
         </div>
       )}
